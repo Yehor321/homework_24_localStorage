@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кнопки</title>
+</head>
+<body>
+    <button id="button1">Перша кнопка</button>
+    <button id="clearData">Очистити дані</button>
+    <button id="button2">Друга кнопка</button>
+
+    <script>
+        const button1 = document.getElementById('button1');
+        button1.addEventListener('click', () => {
+            let count = localStorage.getItem('buttonClickCount') || 0;
+            count++;
+            localStorage.setItem('buttonClickCount', count);
+            button1.textContent = `Ця кнопка була натиснута: ${count} раз`;
+        });
+
+        const button2 = document.getElementById('button2');
+        button2.addEventListener('click', () => {
+            let birthDate = localStorage.getItem('birthDate');
+            if (!birthDate) {
+                birthDate = prompt('Введіть дату вашого народження у форматі YYYY-MM-DD');
+                localStorage.setItem('birthDate', birthDate);
+            }
+            const age = calculateAge(birthDate);
+            alert(`Ваш вік: ${age} років`);
+        });
+
+        const clearDataButton = document.getElementById('clearData');
+        clearDataButton.addEventListener('click', () => {
+            localStorage.removeItem('buttonClickCount');
+            localStorage.removeItem('birthDate');
+            sessionStorage.clear();
+            alert('Дані очищено');
+        });
+
+        function calculateAge(birthDate) {
+            const today = new Date();
+            const birth = new Date(birthDate);
+            let age = today.getFullYear() - birth.getFullYear();
+            const m = today.getMonth() - birth.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+                age--;
+            }
+            return age;
+        }
+    </script>
+</body>
+</html>
